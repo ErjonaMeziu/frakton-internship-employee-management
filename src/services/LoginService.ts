@@ -1,8 +1,9 @@
 import { prisma } from '../config/prisma';
 const jwt = require('jsonwebtoken');
+import { ComparePassword } from '../utils/comparePassword.util';
 
 export const LoginService = {
-    handleLogin: async ( userEmail: string, password: string) =>
+    login: async ( userEmail: string, password: string) =>
     {
         
         const foundUser = await prisma.user.findUnique({
@@ -10,20 +11,22 @@ export const LoginService = {
                 email: userEmail
             }
         });
-        if (password === foundUser?.password)
+
+        const match = await ComparePassword(password, foundUser?.password!);
+
+        if (match)
         {
             const roles = foundUser?.role;
             
             const accessToken = jwt.sign(
                 {
                     UserInfo: {
-                        username: foundUser.name,
-                        roles: roles,
+                        username: foundUser?.name,
+                        role: roles,
                     },
                 },
                 process.env.ACCESS_TOKEN_SECRET
             );
-            console.log(foundUser?.role);
             return accessToken;
         }
        
