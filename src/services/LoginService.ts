@@ -1,6 +1,7 @@
 import { prisma } from '../config/prisma';
 const jwt = require('jsonwebtoken');
 import { ComparePassword } from '../utils/comparePassword.util';
+import { generateJWT } from '../utils/generateJWT.util';
 
 export const LoginService = {
     login: async ( userEmail: string, password: string) =>
@@ -17,16 +18,8 @@ export const LoginService = {
         if (match)
         {
             const roles = foundUser?.role;
-            
-            const accessToken = jwt.sign(
-                {
-                    UserInfo: {
-                        username: foundUser?.name,
-                        role: roles,
-                    },
-                },
-                process.env.ACCESS_TOKEN_SECRET
-            );
+
+            const accessToken= await generateJWT(foundUser?.name!,roles!)
             return accessToken;
         }
        
