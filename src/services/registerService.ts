@@ -1,7 +1,8 @@
 import { prisma } from '../config/prisma';
 
-export const registerService = {
-     test: async (userName: string, userEmail: string, password: string,companyName:string) => {
+export const RegisterService = {
+    register: async (userName: string, userEmail: string, password: string, companyName: string) => 
+    {
         const userData = await prisma.user.create({
             data: {
                 name: userName,
@@ -9,7 +10,7 @@ export const registerService = {
                 password: password,
                 register_at: new Date(),
                 role: 'CompanyOwner',
-                isApproved:false
+                is_approved:false
             },
         });
         const companyData = await prisma.company.create({
@@ -17,7 +18,7 @@ export const registerService = {
                 userId: userData.id,
                 name: companyName,
                 joined_at: new Date(),
-                updatet_at: new Date(),
+                updated_at: new Date(),
                 logo: "Ss",
             },
         });

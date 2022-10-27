@@ -11,37 +11,38 @@ datasource db {
 }
 
 model User {
-  id      Int      @id @default(autoincrement())
-  email   String   @unique
-  name    String
-  password String 
-  register_at DateTime @default(now())
-  isApproved Boolean @default(false)
-  role    Role    
-  profile String?
-  company Company[]
-  employee Employee[]
+  id          Int        @id @default(autoincrement())
+  email       String     @unique
+  name        String
+  password    String
+  register_at DateTime   @default(now())
+  is_approved Boolean    @default(false)
+  role        Role
+  profile     String?
+  company     Company[]
+  employee    Employee[]
 }
 
-model Company{
-   id      Int      @id @default(autoincrement())
-   name String @unique
-   joined_at DateTime
-   updatet_at DateTime
-   logo String?
-   user   User @relation(fields: [userId], references: [id])
-   userId Int
-   employee Employee[]
+model Company {
+  id         Int        @id @default(autoincrement())
+  name       String     @unique
+  joined_at  DateTime
+  updated_at DateTime
+  logo       String?
+  user       User       @relation(fields: [userId], references: [id])
+  userId     Int
+  employee   Employee[]
 }
-model Employee{
-  id      Int      @id @default(autoincrement())
-  name String
-  hired_at DateTime
-  userId Int
-  companyId Int 
-  role Role
-  user   User @relation(fields: [userId], references: [id])
-  company   Company @relation(fields: [companyId], references: [id])
+
+model Employee {
+  id        Int      @id @default(autoincrement())
+  name      String
+  hired_at  DateTime
+  userId    Int
+  companyId Int
+  role      Role
+  user      User     @relation(fields: [userId], references: [id])
+  company   Company  @relation(fields: [companyId], references: [id])
 }
 
 enum Role {
@@ -49,4 +50,3 @@ enum Role {
   CompanyOwner
   CompanyAdmins
 }
-

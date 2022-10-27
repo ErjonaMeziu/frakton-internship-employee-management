@@ -8,7 +8,7 @@ CREATE TABLE "User" (
     "name" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "register_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "isApproved" BOOLEAN NOT NULL DEFAULT false,
+    "is_approved" BOOLEAN NOT NULL DEFAULT false,
     "role" "Role" NOT NULL,
     "profile" TEXT,
 
@@ -20,7 +20,7 @@ CREATE TABLE "Company" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "joined_at" TIMESTAMP(3) NOT NULL,
-    "updatet_at" TIMESTAMP(3) NOT NULL,
+    "updated_at" TIMESTAMP(3) NOT NULL,
     "logo" TEXT,
     "userId" INTEGER NOT NULL,
 
