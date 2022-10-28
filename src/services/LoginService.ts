@@ -1,27 +1,30 @@
 import { prisma } from '../config/prisma';
+import UserModel from '../models/User.model';
 const jwt = require('jsonwebtoken');
 import { ComparePassword } from '../utils/comparePassword.util';
-import { generateJWT } from '../utils/generateJWT.util';
+import { GenerateJWT } from '../utils/generateJWT.util';
+import { UserDataModel } from '../interfaces/models/UserData.model';
 
 export const LoginService = {
     login: async ( userEmail: string, password: string) =>
     {
-        
-        const foundUser = await prisma.user.findUnique({
+        const userData = await prisma.user.findUnique({
             where: {
                 email: userEmail
             }
         });
 
-        const match = await ComparePassword(password, foundUser?.password!);
-
+        let accessToken;
+        if (!userData) return { status: 400, data: "User not found" };
+        const match = await ComparePassword(password, userData.password);
         if (match)
         {
-            const roles = foundUser?.role;
-
-            const accessToken= await generateJWT(foundUser?.name!,roles!)
-            return accessToken;
+            accessToken = await GenerateJWT(userData);
+            return { status: 200, data: accessToken };
         }
        
+            return { status: 403, data: "Your password is incorrect" }
+    
     },
+    
 };

@@ -25,7 +25,7 @@ export const RegisterService = {
             },
         });
         
-
+        return { status: 200, data: "Your request to join our platform has been successful." };
     },
    
 };

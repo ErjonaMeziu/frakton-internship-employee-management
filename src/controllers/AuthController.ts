@@ -11,8 +11,8 @@ AuthController.post('/register', async (req: Request, res: Response, next: NextF
     try {
         const result = await RegisterService.register(userName, userEmail, password, companyName);
 
-        res.status(200).send({
-            success: 'succesful request to join our platform',
+        res.status(result.status).send({
+            data: result.data,
         });
        
     } catch (e) {
@@ -25,8 +25,8 @@ AuthController.post('/login', async (req: Request, res: Response, next: NextFunc
     try {
         const result = await LoginService.login(userEmail, password);
 
-        res.status(200).send({
-            success: result,
+        res.status(result.status).send({
+            data: result.data,
         });
     } catch (e) {
         next(e);
