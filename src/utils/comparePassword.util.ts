@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+import bcrypt from 'bcrypt';
 
 export const ComparePassword = async (password: string, hashedPassword: string) => {
     return new Promise((resolve, reject) => {
