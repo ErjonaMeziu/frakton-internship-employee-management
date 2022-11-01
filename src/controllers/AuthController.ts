@@ -2,13 +2,10 @@ import { NextFunction, request, Request, Response, Router } from 'express';
 import { PingService } from '../services/Ping.service';
 import { RegisterService } from '../services/registerService';
 import { LoginService } from '../services/LoginService';
-<<<<<<< Updated upstream
 
-=======
-import { schema } from '../validators/userInputValidator';
+
 import Joi from 'joi';
 import { verifyJWT } from '../middleware/verifyJWT';
->>>>>>> Stashed changes
 
 export const AuthController: Router = Router();
 

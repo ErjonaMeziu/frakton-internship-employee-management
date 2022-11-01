@@ -23,13 +23,7 @@ export const LoginService = {
 
             return { status: 200, data: accessToken };
         }
-<<<<<<< Updated upstream
-       
-            return { status: 403, data: "Your password is incorrect" }
-    
-=======
 
         return { status: 403, data: 'Login Failed:Your userEmail or password is incorrect' };
->>>>>>> Stashed changes
     },
 };
