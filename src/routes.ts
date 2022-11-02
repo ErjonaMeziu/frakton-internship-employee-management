@@ -5,7 +5,7 @@ import { AuthController } from './controllers/AuthController';
 import { verifyJWT } from "./middleware/verifyJWT";
 
 const _routes: [string, Router][] = [
-    ['/ping', PingController],['/auth', AuthController],
+    ['/ping',PingController],['/auth', AuthController],
 ];
 
 export const routes = (app: Application) => {
