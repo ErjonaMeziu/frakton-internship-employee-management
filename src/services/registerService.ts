@@ -1,6 +1,7 @@
 import { prisma } from '../config/prisma';
 import { HashPassword } from '../utils/hashPassword.util';
 
+
 export const RegisterService = {
     register: async (userName: string, userEmail: string, password: string, companyName: string) => 
     {
