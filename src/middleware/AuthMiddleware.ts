@@ -7,18 +7,18 @@ export const AuthMiddleware = (...allowedRoles: string[]) => {
     return async (req: Request, res: Response, next: NextFunction) => {
         const authHeader = req.headers.authorization || req.headers.Authorization;
         if (!authHeader) {
-            res.status(401).send('You are not logged in!');
+            res.status(401).send({ data: 'You are not logged in!' });
         }
         const token = (authHeader as string).split(' ')[1];
 
         jwt.verify(token, JWT_SECRET, async (err, decoded) => {
-            if (err) res.status(401).send( 'Unathorized user');
+            if (err) res.status(401).send({ data: 'Unathorized user' });
             else {
                 res.locals.jwt = decoded;
                 const decodedObj = decoded as DecodeDataModel;
                 const role = decodedObj.payload.role;
 
-                allowedRoles.includes(role) ? next() : res.status(403).send('Unathorized user');
+                allowedRoles.includes(role) ? next() : res.status(403).send({ data: 'Unathorized user' });
             }
         });
     };
