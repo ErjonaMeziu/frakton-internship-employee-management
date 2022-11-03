@@ -1,11 +1,11 @@
-// import bcrypt from 'bcryptjs';
+import bcrypt from 'bcrypt';
 
-// export const ComparePassword = async (pwd: string, hashedPwd: string) => {
-//     return new Promise((resolve, reject) => {
-//         try {
-//             resolve(bcrypt.compareSync(pwd, hashedPwd));
-//         } catch (e) {
-//             reject(e);
-//         }
-//     });
-// };
+export const ComparePassword = async (password: string, hashedPassword: string) => {
+    return new Promise((resolve, reject) => {
+        try {
+            resolve(bcrypt.compare(password, hashedPassword));
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
