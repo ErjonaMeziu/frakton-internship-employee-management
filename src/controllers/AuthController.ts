@@ -2,10 +2,7 @@ import { NextFunction, request, Request, Response, Router } from 'express';
 import { PingService } from '../services/Ping.service';
 import { RegisterService } from '../services/registerService';
 import { LoginService } from '../services/LoginService';
-import Joi from 'joi';
-import { verifyJWT } from '../middleware/verifyJWT';
 import { prisma } from '@prisma/client';
-import { Role } from '@prisma/client';
 
 
 export const AuthController: Router = Router();

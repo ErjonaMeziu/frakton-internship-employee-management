@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response, Router } from 'express';
 
 import { PingService } from '../services/Ping.service';
-
+import { AuthMiddleware} from '../middleware/AuthMiddleware';
+import { Role } from '@prisma/client';
 export const PingController: Router = Router();
 
 PingController.get('/', async (req: Request, res: Response, next: NextFunction) => {
@@ -28,11 +29,11 @@ PingController.post('/', async (req: Request, res: Response, next: NextFunction)
     }
 });
 
-PingController.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
+PingController.get('/welcome',AuthMiddleware(Role.CompanyAdmins),async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const id = req.params.id;
+       
         // const result = await PingService.test(id);
-
+       
         const result = await PingService.test();
 
         res.status(200).send({

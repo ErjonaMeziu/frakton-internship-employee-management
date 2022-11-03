@@ -15,10 +15,9 @@ export const LoginService = {
 
         let accessToken;
         if (!userData) return { status: 400, data: 'User not found' };
-        
+
         const match = await ComparePassword(password, userData.password);
-        if (match)
-        {
+        if (match) {
             accessToken = await GenerateJWT(userData);
 
             return { status: 200, data: accessToken };

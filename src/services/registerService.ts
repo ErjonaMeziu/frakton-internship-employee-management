@@ -12,7 +12,7 @@ export const RegisterService = {
                 password:hashedPassword,
                 register_at: new Date(),
                 role: 'CompanyOwner',
-                is_approved:false
+                is_approved:false,
             },
         });
         const companyData = await prisma.company.create({
