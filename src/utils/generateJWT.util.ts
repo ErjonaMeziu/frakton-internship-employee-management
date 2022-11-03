@@ -1,5 +1,6 @@
-const jwt = require('jsonwebtoken');
-import { UserDataModel } from "../interfaces/models/UserData.model";
+import * as jwt from 'jsonwebtoken';
+import { JWT_SECRET, JWT_EXPIRES_IN, JWT_ALGORITHM } from '../config/auth';
+import { UserDataModel } from '../interfaces/models/UserData.model';
 
 export const GenerateJWT = (user: UserDataModel) => {
     const payload = {
@@ -7,8 +8,5 @@ export const GenerateJWT = (user: UserDataModel) => {
         user_id: user.id,
     };
 
-    return jwt.sign(payload, process.env.JWT_SECRET, {
-        expiresIn: process.env.JWT_EXPIRES_IN,
-        algorithm: process.env.JWT_ALGORITHM,
-    });
+    return jwt.sign({ payload }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN, algorithm: JWT_ALGORITHM as jwt.Algorithm });
 };
