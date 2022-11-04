@@ -18,3 +18,5 @@ routes(app);
 
 // Application (global) error handling
 app.use(AppErrorHandlerMiddleware);
+
+import "./events/index"

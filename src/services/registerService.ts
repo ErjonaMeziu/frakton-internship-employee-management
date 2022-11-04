@@ -1,5 +1,6 @@
 import { prisma } from '../config/prisma';
 import { HashPassword } from '../utils/hashPassword.util';
+import {Event} from '../events/App.event'
 
 
 export const RegisterService = {
@@ -26,6 +27,7 @@ export const RegisterService = {
             },
         });
         
+        Event.emit('register::company', (companyName));
         return { status: 200, data: "Your request to join our platform has been successful." };
     },
    
