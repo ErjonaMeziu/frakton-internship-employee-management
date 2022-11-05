@@ -3,6 +3,7 @@ import { HashPassword } from '../utils/hashPassword.util';
 import {Event} from '../events/App.event'
 
 
+
 export const RegisterService = {
     register: async (userName: string, userEmail: string, password: string, companyName: string) => 
     {

@@ -1,31 +1,22 @@
 import { Event } from './App.event';
-import nodemailer from 'nodemailer';
+import { MailHog } from '../utils/MailHog';
+import { FROM_ADDRESS } from '../config/mail';
+import { readFile } from '../utils/ReadFile';
+import { prisma } from '../config/prisma';
 
-Event.on('register::company', async (company:string) =>
-{
-    try
-    {
-        let mailConfig = nodemailer.createTransport({
-            host: 'smtpmailhog.frakton.dev',
-            port: 1025,
-            auth: {
-                user: 'mailhog',
-                pass: 'MailHog!23',
-            }
-        })
-
-        await mailConfig.sendMail({
-            from: 'employee-managment@frakton.dev',
-            to: 'platformAdmin@example.com',
-            subject: 'Hello ✔',
-            text: `You have a new request to join your platform from ${company}`,
-            html: '<b>Hello world?</b>',
+Event.on('register::company', async (company: string) => {
+    const admin = await prisma.user.findFirst({
+        where: {
+            role: 'PlatformAdmin',
+        },
+    });
+    try {
+        let ss = await MailHog.sendMail({
+            from: FROM_ADDRESS,
+            to: admin?.email,
+            html: readFile(company),
         });
+    } catch (err) {
+        return { status: 406, data: 'Unacceptable request' };
     }
-    catch (err)
-    {
-        return { status: 406, data: "Unacceptable request" };
-    }
-    
 });
-
