@@ -2,11 +2,10 @@ import { prisma } from '../config/prisma';
 import { HashPassword } from '../utils/hashPassword.util';
 import {Event} from '../events/App.event'
 
-
-
 export const RegisterService = {
     register: async (userName: string, userEmail: string, password: string, companyName: string) => 
     {
+        
         const hashedPassword = await HashPassword(password);
         const userData = await prisma.user.create({
             data: {
@@ -24,12 +23,14 @@ export const RegisterService = {
                 name: companyName,
                 joined_at: new Date(),
                 updated_at: new Date(),
+                status:"inactive",
                 logo: "Ss",
             },
         });
         
-        Event.emit('register::company', (companyName));
+       // Event.emit('register::company', (companyName));
         return { status: 200, data: "Your request to join our platform has been successful." };
+        
     },
    
 };

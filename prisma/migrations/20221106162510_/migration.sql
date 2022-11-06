@@ -20,7 +20,9 @@ CREATE TABLE "Company" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "joined_at" TIMESTAMP(3) NOT NULL,
-    "updated_at" TIMESTAMP(3) NOT NULL,
+    "updated_at" TIMESTAMP(3),
+    "deleted_at" TIMESTAMP(3),
+    "status" TEXT NOT NULL,
     "logo" TEXT,
     "userId" INTEGER NOT NULL,
 

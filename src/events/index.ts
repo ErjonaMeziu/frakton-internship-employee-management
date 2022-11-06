@@ -1,3 +1,3 @@
 import "./App.event";
 
-import "./RegisterEvent"
+import "./RegisterEvent";

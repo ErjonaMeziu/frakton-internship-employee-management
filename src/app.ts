@@ -6,7 +6,7 @@ import { AppErrorHandlerMiddleware } from './middleware/AppErrorHandlerMiddlewar
 
 // Boot express
 export const app: Application = express();
-
+app.use(express.urlencoded({ extended: true}));
 // CORS
 app.use(CorsMiddleware);
 
@@ -19,4 +19,11 @@ routes(app);
 // Application (global) error handling
 app.use(AppErrorHandlerMiddleware);
 
-import "./events/index"
+<<<<<<< Updated upstream
+
+
+import './events/index';
+
+=======
+import "../src/events/index";
+>>>>>>> Stashed changes
