@@ -6,7 +6,7 @@ export const ApproveRequestsService = {
     {
         const companyData = await prisma.company.findUnique({
             where: {
-                id: id,
+                id,
             },
         });
 
@@ -14,7 +14,7 @@ export const ApproveRequestsService = {
 
         await prisma.company.update({
             where: {
-                id: id,
+                id,
             },
             data: {
                 joined_at: new Date(),

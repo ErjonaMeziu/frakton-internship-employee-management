@@ -40,10 +40,12 @@ model Employee {
   id        Int      @id @default(autoincrement())
   name      String
   hired_at  DateTime
-  userId    Int
+  updated_at DateTime?
+  deleted_at DateTime?
+  user_id    Int
   companyId Int
   role      Role
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [user_id], references: [id])
   company   Company  @relation(fields: [companyId], references: [id])
 }
 
@@ -51,4 +53,5 @@ enum Role {
   PlatformAdmin
   CompanyOwner
   CompanyAdmins
+  Normal
 }

@@ -9,9 +9,8 @@ export const AuthMiddleware = (...allowedRoles: string[]) => {
         if (!authHeader)
         {
             res.status(401).send({ data: 'You are not logged in!' });
+            return;
         }
-        else
-        {
             const token = (authHeader as string).split(' ')[1];
 
             jwt.verify(token, JWT_SECRET, async (err, decoded) =>
@@ -24,8 +23,9 @@ export const AuthMiddleware = (...allowedRoles: string[]) => {
                     const role = decodedObj.payload.role;
                     
                     allowedRoles.includes(role) ? next() : res.status(403).send({ data: 'Unathorized user' });
+                    return role;
                 }
             });
-        }
+        
     };
 };

@@ -52,6 +52,7 @@ PlatformAdminController.get(
     AuthMiddleware(Role.PlatformAdmin),
     async (req: Request, res: Response, next: NextFunction) => {
         try {
+            
             const result = await UsingPlatformCompaniesService.getUsingCompanies();
 
             res.status(result.status).send({

@@ -6,7 +6,7 @@ export const DenyRequestsService = {
     {
         const companyData = await prisma.company.findUnique({
             where: {
-                id: id,
+                id,
             }
         });
 
@@ -15,7 +15,7 @@ export const DenyRequestsService = {
 
         await prisma.company.delete({
             where: {
-                id: id,
+                id,
             },
         });
 
