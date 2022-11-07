@@ -27,8 +27,11 @@ export const RegisterService = {
                 logo: "Ss",
             },
         });
-        
-       // Event.emit('register::company', (companyName));
+        const data = {
+            companyOwner: userData.name,
+            companyName:companyData.name,
+        }
+        Event.emit('register::company', (data));
         return { status: 200, data: "Your request to join our platform has been successful." };
         
     },

@@ -9,7 +9,7 @@ export const ApproveRequestsService = {
                 id,
             },
         });
-
+        
         if (!companyData) return { status: 404, data: `No requests with id ${id}` };
 
         await prisma.company.update({
@@ -28,12 +28,12 @@ export const ApproveRequestsService = {
                 },
             },
         });
-
-
+       
         
        //send email to owner
-       
-      return { status: 200, data: " Approved" };
+        Event.emit('approve::company', (companyData.userId));
+        
+       return { status: 200, data: " Approved" };
         
     },
 };

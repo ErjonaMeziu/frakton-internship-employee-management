@@ -20,7 +20,7 @@ export const DenyRequestsService = {
         });
 
         //send email to owner
-        
+         Event.emit('approvedeny::company', (companyData.userId));
         return { status: 200, data: 'Denied' };
     
     },
