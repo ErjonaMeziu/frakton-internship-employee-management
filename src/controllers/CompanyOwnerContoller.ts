@@ -20,7 +20,6 @@ import { Role } from '@prisma/client';
 import { AuthMiddleware } from '../middleware/AuthMiddleware';
 import { DecodeJWT } from '../utils/DecodeJWT';
 
-
 export const CompanyOwnerController: Router = Router();
 
 CompanyOwnerController.post(

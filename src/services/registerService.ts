@@ -1,9 +1,10 @@
 import { prisma } from '../config/prisma';
 import { HashPassword } from '../utils/hashPassword.util';
-import {Event} from '../events/App.event'
+import { Event } from '../events/App.event'
+
 
 export const RegisterService = {
-    register: async (userName: string, userEmail: string, password: string, companyName: string) => 
+    register: async (userName: string, userEmail: string, password: string, companyName: string,logo:string) => 
     {
         
         const hashedPassword = await HashPassword(password);
@@ -14,7 +15,7 @@ export const RegisterService = {
                 password:hashedPassword,
                 register_at: new Date(),
                 role: 'CompanyOwner',
-                is_approved:false,
+                is_approved: false,
             },
         });
         const companyData = await prisma.company.create({
@@ -24,7 +25,7 @@ export const RegisterService = {
                 joined_at: new Date(),
                 updated_at: new Date(),
                 status:"inactive",
-                logo: "Ss",
+                logo:logo,
             },
         });
         const data = {

@@ -16,7 +16,7 @@ export const UsingPlatformCompaniesService = {
             select: {
                 name: true,
                 joined_at: true,
-                
+                logo:true,
                 },
             });
 

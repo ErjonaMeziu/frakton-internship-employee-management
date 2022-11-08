@@ -1,5 +1,5 @@
 import express, { Application } from 'express';
-
+import bodyParser from 'body-parser'
 import { routes } from './routes';
 import { CorsMiddleware } from './middleware/CorsMiddleware';
 import { AppErrorHandlerMiddleware } from './middleware/AppErrorHandlerMiddleware';
@@ -12,6 +12,13 @@ app.use(CorsMiddleware);
 
 // Express configuration
 app.use(express.json());
+
+app.use(
+    bodyParser.urlencoded({
+        extended: true,
+    })
+);
+
 
 // Application routing
 routes(app);
