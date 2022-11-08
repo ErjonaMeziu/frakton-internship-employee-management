@@ -31,7 +31,7 @@ export const ApproveRequestsService = {
        
         
        //send email to owner
-        Event.emit('approve::company', (companyData.userId));
+        Event.emit('approve::deny::company', (companyData.userId));
         
        return { status: 200, data: " Approved" };
         

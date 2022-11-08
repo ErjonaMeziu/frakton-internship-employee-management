@@ -5,7 +5,7 @@ import { LoadFile } from '../utils/LoadFile';
 import { prisma } from '../config/prisma';
 
 export const SendMailToPlatformAdminService = {
-    sendmail: async (Data:any) =>
+    sendmail: async (data:Object) =>
     {
         const admin = await prisma.user.findFirst({
             where: {
@@ -17,7 +17,7 @@ export const SendMailToPlatformAdminService = {
         MailHog.sendMail({
             from: FROM_ADDRESS,
             to: admin?.email,
-            html: LoadFile('../views/requestEmail.html', Data),
+            html: LoadFile('../views/requestEmail.html', data),
         });
     }
 }

@@ -1,4 +1,11 @@
 import { NextFunction, request, Request, Response, Router } from 'express';
+import { CreateEmployeeService } from '../services/CreateEmployeeService';
+import { CurrentEmployeeService } from '../services/CurrentEmployeeService';
+import { ExEmployeeService } from '../services/ExEmployeeService';
+import { UpdatEemployeeService } from '../services/UpdateEmployeeService';
+import { AllEmployeeService } from '../services/AllEmployeeService';
+import { HiredEmployeeService } from '../services/HiredEmployeeService';
+import { AnniversaryEmployeeService } from '../services/AnniversaryEmployeeService';
 import { PingService } from '../services/Ping.service';
 import { RegisterService } from '../services/registerService';
 import { LoginService } from '../services/LoginService';
@@ -8,18 +15,23 @@ import { UsingPlatformCompaniesService } from '../services/UsingPlatformCompanie
 import { RemoveCompanyService } from '../services/RemoveCompanyService';
 import { ActiveCompaniesService } from '../services/ActiveCompaniesService';
 import { InActiveCompaniesService } from '../services/InActiveCompaniesService';
-import { DenyRequestsService } from '../services/DenyRequestsService'; 
+import { DenyRequestsService } from '../services/DenyRequestsService';
 import { Role } from '@prisma/client';
 import { AuthMiddleware } from '../middleware/AuthMiddleware';
+import { DecodeJWT } from '../utils/DecodeJWT';
 
-export const PlatformAdminController: Router = Router();
 
-PlatformAdminController.get(
-    '/requests',
-    AuthMiddleware(Role.PlatformAdmin),
+export const CompanyOwnerController: Router = Router();
+
+CompanyOwnerController.post(
+    '/create',
+    AuthMiddleware(Role.CompanyOwner),
     async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const result = await JoiningRequestsService.getRequests();
+        try
+        {
+            const { userName,userEmail,password,role } = req.body;
+            const companyOwnerId = DecodeJWT(req,res,next);
+            const result = await CreateEmployeeService.create(userName, userEmail, password, role,companyOwnerId);
 
             res.status(result.status).send({
                 data: result.data,
@@ -30,13 +42,12 @@ PlatformAdminController.get(
     }
 );
 
-PlatformAdminController.patch(
-    '/approve/:id',
-    AuthMiddleware(Role.PlatformAdmin),
+CompanyOwnerController.get(
+    '/current',
+    AuthMiddleware(Role.CompanyOwner),
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const id = req.params.id;
-            const result = await ApproveRequestsService.approveRequests(+id);
+            const result = await CurrentEmployeeService.getCurrent();
 
             res.status(result.status).send({
                 data: result.data,
@@ -47,13 +58,12 @@ PlatformAdminController.patch(
     }
 );
 
-PlatformAdminController.get(
-    '/all-companies',
-    AuthMiddleware(Role.PlatformAdmin),
+CompanyOwnerController.get(
+    '/ex',
+    AuthMiddleware(Role.CompanyOwner),
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            
-            const result = await UsingPlatformCompaniesService.getUsingCompanies();
+            const result = await ExEmployeeService.getEx();
 
             res.status(result.status).send({
                 data: result.data,
@@ -64,14 +74,12 @@ PlatformAdminController.get(
     }
 );
 
-
-PlatformAdminController.patch(
-    '/remove/:id',
-    AuthMiddleware(Role.PlatformAdmin),
+CompanyOwnerController.get(
+    '/all',
+    AuthMiddleware(Role.CompanyOwner),
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const id = req.params.id;
-            const result = await RemoveCompanyService.remove(+id);
+            const result = await AllEmployeeService.getAll();
 
             res.status(result.status).send({
                 data: result.data,
@@ -82,46 +90,47 @@ PlatformAdminController.patch(
     }
 );
 
-PlatformAdminController.get(
-    '/active',
-    AuthMiddleware(Role.PlatformAdmin),
-    async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const result = await ActiveCompaniesService.getActive();
-
-            res.status(result.status).send({
-                data: result.data,
-            });
-        } catch (e) {
-            next(e);
-        }
-    }
-);
-
-PlatformAdminController.get(
-    '/inactive',
-    AuthMiddleware(Role.PlatformAdmin),
-    async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const result = await InActiveCompaniesService.getInActive();
-
-            res.status(result.status).send({
-                data: result.data,
-            });
-        } catch (e) {
-            next(e);
-        }
-    }
-);
-
-PlatformAdminController.put(
-    '/deny/:id',
-    AuthMiddleware(Role.PlatformAdmin),
+CompanyOwnerController.put(
+    '/update/:id',
+    AuthMiddleware(Role.CompanyOwner),
     async (req: Request, res: Response, next: NextFunction) => {
         try
         {
             const id = req.params.id;
-            const result = await DenyRequestsService.denyRequests(+id);
+            const {userName,hired_at,deleted_at } = req.body;
+            const result = await UpdatEemployeeService.update(+id,userName,hired_at,deleted_at);
+
+            res.status(result.status).send({
+                data: result.data,
+            });
+        } catch (e) {
+            next(e);
+        }
+    }
+);
+
+CompanyOwnerController.get(
+    '/future',
+    AuthMiddleware(Role.CompanyOwner),
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const result = await HiredEmployeeService.getHired();
+
+            res.status(result.status).send({
+                data: result.data,
+            });
+        } catch (e) {
+            next(e);
+        }
+    }
+);
+
+CompanyOwnerController.get(
+    '/anniversary',
+    AuthMiddleware(Role.CompanyOwner),
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const result = await AnniversaryEmployeeService.getAnniversary();
 
             res.status(result.status).send({
                 data: result.data,

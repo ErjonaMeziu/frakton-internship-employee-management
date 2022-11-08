@@ -4,20 +4,20 @@ import { LoadFile } from '../utils/LoadFile';
 import { prisma } from '../config/prisma';
 
 export const ApproveDenyRequestSendMailService = {
-    sendmail: async (ComanyOwnerId: number) =>
+    sendmail: async (comanyOwnerId: number) =>
     {
-        console.log(ComanyOwnerId);
+        
         const owner = await prisma.user.findUnique({
             where: {
-                id: ComanyOwnerId,
+                id: comanyOwnerId,
             },
         });
 
-        const approveDenied=(owner?.is_approved)? 'approved':'denied'
+        const status=(owner?.is_approved)? 'approved':'denied'
 
         const data = {
             companyOwner: owner?.name,
-            approveDenied,
+            status,
         }
        
         MailHog.sendMail({

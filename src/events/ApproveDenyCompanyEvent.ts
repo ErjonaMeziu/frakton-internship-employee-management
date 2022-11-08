@@ -1,7 +1,7 @@
 import { Event } from './App.event';
 import { ApproveDenyRequestSendMailService } from '../services/ApproveDenyRequestSendMailService';
 
-Event.on('approvedeny::company', async (companyOwnerId: number) =>
+Event.on('approve::deny::company', async (companyOwnerId: number) =>
 {
     try
     {
