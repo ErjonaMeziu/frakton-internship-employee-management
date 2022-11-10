@@ -1,22 +1,25 @@
 import { NextFunction, request, Request, Response, Router } from 'express';
-import { PingService } from '../services/Ping.service';
 import { RegisterService } from '../services/registerService';
 import { LoginService } from '../services/LoginService';
 import { prisma } from '@prisma/client';
 import { RegisterValidator } from '../validators/AuthValidator';
 import { LoginValidator } from '../validators/AuthValidator';
 import { ValidationMiddleware } from '../middleware/ValidationMiddleware';
+import { upload } from '../middleware/MulterMiddleware';
 
 export const AuthController: Router = Router();
 
 AuthController.post(
-    '/register',
-    ValidationMiddleware(RegisterValidator, {}),
-    async (req: Request, res: Response, next: NextFunction) => {
-        const { userName, userEmail, password, companyName } = req.body;
-        try {
-            const result = await RegisterService.register(userName, userEmail, password, companyName);
+    '/register',upload.single("logo"),
+    async (req: Request, res: Response, next: NextFunction) =>
+    {  
+        //console.log(req.file?.path);
+        //console.log(req.body);
+        const filePath:any = req.file?.path;
+        const { userName, userEmail, password, companyName,} = req.body;
 
+        try {
+            const result = await RegisterService.register(userName, userEmail, password, companyName,filePath);
             res.status(result.status).send({
                 data: result.data,
             });

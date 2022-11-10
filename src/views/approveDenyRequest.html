@@ -104,25 +104,18 @@
     <body>
         <div class="email-template">
             <div class="email-template__main">
-                <h1 class="title">
-                    Trouble signing in? <br />
-                    Resetting your password is easy.
-                </h1>
+                <h1 class="title">Employee management join request!</h1>
 
                 <p class="paragraph">
-                    {{Just press the button below and follow the instructions. We’ll have you up and running in no
-                    time.}}
+                   {{companyOwner}} your request has been {{status}}.
                 </p>
-                <a href="{{APP_URL_RESET_PASSWORD}}/{{token}}">
-                    <button class="button">Reset password</button>
-                </a>
-                <p class="paragraph">If you did not make this request then please ignore this email.</p>
+
                 <hr class="hr--color" />
             </div>
 
             <div class="email-template__footer">
-                <p>If you’re having trouble with the link above, copy and paste the URL below into your web browser.</p>
-                <a href="{{APP_URL_RESET_PASSWORD}}/{{token}}">{{APP_URL_RESET_PASSWORD}}/{{token}}</a>
+                <p>Thanks for application</p>
+
                 <div class="email-template__action">
                     <div class="address">
                         <p>BKMNG APP 2022. All rights reserved.</p>

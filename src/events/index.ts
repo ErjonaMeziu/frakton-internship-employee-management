@@ -1,1 +1,5 @@
-import "./App.event";
+import './App.event';
+
+import './RegisterEvent';
+
+import './ApproveDenyCompanyEvent';
