@@ -1,11 +1,20 @@
 import { Event } from './App.event';
-import { ApproveDenyRequestSendMailService } from '../services/ApproveDenyRequestSendMailService';
+import { MailHog } from '../utils/MailHog';
+import { FROM_ADDRESS } from '../config/mail';
+import { LoadFile } from '../utils/LoadFile';
 
-Event.on('approve::deny::company', async (companyOwnerId: number) =>
+Event.on('approve::deny::company', async ({ companyOwnerEmail, companyOwner,status }) =>
 {
     try
     {
-        await ApproveDenyRequestSendMailService.sendmail(companyOwnerId);
+        await MailHog.sendMail({
+            from: FROM_ADDRESS,
+            to: companyOwnerEmail,
+            html: LoadFile('../views/approveDenyRequest.html', {
+                companyOwner,
+                status,
+            }),
+        });
         
     } catch (err)
     {

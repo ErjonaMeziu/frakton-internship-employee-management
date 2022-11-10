@@ -20,18 +20,32 @@ export const ApproveRequestsService = {
                 joined_at: new Date(),
                 updated_at: new Date(),
                 status:"active",
-                user: {
-                    update: {
-                        is_approved: true,
-                    },
-                
-                },
             },
         });
-       
+
+        await prisma.user.updateMany({
+            where: {
+                company_id: id,
+            },
+            data: {
+                is_approved:true,
+            }
+        });
         
-       //send email to owner
-        Event.emit('approve::deny::company', (companyData.userId));
+        const owner = await prisma.user.findFirst({
+            where: {
+                company_id:id
+            },
+        });
+
+        const status = owner?.is_approved ? 'approved' : 'denied';
+
+        
+        Event.emit('approve::deny::company', ({
+            companyOwnerEmail: owner?.email,
+            companyOwner: owner?.name,
+            status,
+        }));
         
        return { status: 200, data: " Approved" };
         

@@ -17,10 +17,15 @@ export const LoginService = {
         if (!userData) return { status: 400, data: 'User not found' };
 
         const match = await ComparePassword(password, userData.password);
-        if (match) {
-            accessToken = await GenerateJWT(userData);
+        if (match)
+        {
+            if (userData.is_approved)
+            {
+                accessToken = await GenerateJWT(userData);
 
-            return { status: 200, data: accessToken };
+                return { status: 200, data: accessToken };
+            }
+            return { status: 403, data: "Login Failed: You are not approved" };
         }
 
         return { status: 403, data: 'Login Failed:Your userEmail or password is incorrect' };

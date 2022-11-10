@@ -1,10 +1,17 @@
 import { prisma } from '../config/prisma';
 
 export const CurrentEmployeeService = {
-    getCurrent: async () => {
+    getCurrent: async (userId: number) =>
+    {
+        const userData = await prisma.user.findUnique({
+            where: {
+                id: userId,
+            }
+        });
         const emplData = await prisma.employee.findMany({
             where: {
-                deleted_at: null,
+                company_id: userData?.company_id as number,
+                AND: [{ deleted_at: null }],
             },
             select: {
                 name: true,
@@ -15,6 +22,8 @@ export const CurrentEmployeeService = {
                 },
             },
         });
+
+        if (!emplData.length) return { status: 404, data: "You dont have current employees" };
 
         return { status: 200, data: emplData };
     },

@@ -1,33 +1,30 @@
 import { prisma } from '../config/prisma';
 
 export const ExEmployeeService = {
-    getEx: async () =>
+    getEx: async (userId:number) =>
     {
-        const emplData = await prisma.employee.findMany({
+        const userData = await prisma.user.findUnique({
             where: {
-                NOT: {
-                    deleted_at: null,
-                }
+                id: userId,
             },
         });
-        console.log(emplData);
-        if (!emplData) return { status: 204, data: "No ex employeess" };
-        
-        await prisma.employee.findMany({
+        const emplData = await prisma.employee.findMany({
             where: {
-                NOT: {
-                    deleted_at: null,
-                }
+                company_id: userData?.company_id as number,
+                AND:[{
+                    NOT: {
+                        deleted_at: null,
+                    }
+                }]
             },
             select: {
                 name: true,
-                user: {
-                    select: {
-                        name: true,
-                    },
-                },
+                hired_at:true,
             },
         });
+        
+        if (!emplData.length) return { status: 404, data: "No ex employeess" };
+        
 
         return { status: 200, data: emplData };
     },

@@ -1,5 +1,4 @@
 import { NextFunction, request, Request, Response, Router } from 'express';
-import { PingService } from '../services/Ping.service';
 import { RegisterService } from '../services/registerService';
 import { LoginService } from '../services/LoginService';
 import { prisma } from '@prisma/client';

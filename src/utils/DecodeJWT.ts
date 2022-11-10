@@ -3,10 +3,9 @@ import jwt from 'jsonwebtoken';
 
 import { DecodeDataModel } from '../interfaces/models/decodeModel';
 
-export const DecodeJWT = (req: Request, res: Response, next: NextFunction) => {
-    const authHeader = req.headers.authorization || req.headers.Authorization;
+export const DecodeJWT = (authHeader: string) => {
 
-    const token = (authHeader as string).split(' ')[1];
+    const token = authHeader.split(' ')[1];
 
     const decoded = jwt.decode(token);
 

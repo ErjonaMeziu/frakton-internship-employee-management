@@ -8,7 +8,7 @@ export const RemoveCompanyService = {
                 id,
             },
         });
-
+        console.log(companyData);
         if (!companyData) return { status: 404, data: `No record for company with id ${id}` };
 
         await prisma.company.update({
@@ -21,8 +21,6 @@ export const RemoveCompanyService = {
                 status: 'inactive',
             },
         });
-
-        //send email to owner
 
         return { status: 200, data: 'Removed' };
     },

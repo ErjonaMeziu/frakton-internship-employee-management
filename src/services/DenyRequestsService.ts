@@ -19,8 +19,20 @@ export const DenyRequestsService = {
             },
         });
 
+        const owner = await prisma.user.findFirst({
+            where: {
+                company_id: id,
+            },
+        });
+
+        const status = owner?.is_approved ? 'approved' : 'denied';
+        
         //send email to owner
-         Event.emit('approvedeny::company', (companyData.userId));
+        Event.emit('approve::deny::company', ({
+            companyOwnerEmail: owner?.email,
+            companyOwner: owner?.name,
+            status,
+        }));
         return { status: 200, data: 'Denied' };
     
     },

@@ -1,4 +1,4 @@
-import { NextFunction, request, Request, Response, Router } from 'express';
+import { NextFunction,  Request, Response, Router } from 'express';
 import { CreateEmployeeService } from '../services/CreateEmployeeService';
 import { CurrentEmployeeService } from '../services/CurrentEmployeeService';
 import { ExEmployeeService } from '../services/ExEmployeeService';
@@ -6,16 +6,6 @@ import { UpdatEemployeeService } from '../services/UpdateEmployeeService';
 import { AllEmployeeService } from '../services/AllEmployeeService';
 import { HiredEmployeeService } from '../services/HiredEmployeeService';
 import { AnniversaryEmployeeService } from '../services/AnniversaryEmployeeService';
-import { PingService } from '../services/Ping.service';
-import { RegisterService } from '../services/registerService';
-import { LoginService } from '../services/LoginService';
-import { JoiningRequestsService } from '../services/JoiningRequestsService';
-import { ApproveRequestsService } from '../services/ApproveRequestsService';
-import { UsingPlatformCompaniesService } from '../services/UsingPlatformCompaniesService';
-import { RemoveCompanyService } from '../services/RemoveCompanyService';
-import { ActiveCompaniesService } from '../services/ActiveCompaniesService';
-import { InActiveCompaniesService } from '../services/InActiveCompaniesService';
-import { DenyRequestsService } from '../services/DenyRequestsService';
 import { Role } from '@prisma/client';
 import { AuthMiddleware } from '../middleware/AuthMiddleware';
 import { DecodeJWT } from '../utils/DecodeJWT';
@@ -28,9 +18,10 @@ CompanyOwnerController.post(
     async (req: Request, res: Response, next: NextFunction) => {
         try
         {
-            const { userName,userEmail,password,role } = req.body;
-            const companyOwnerId = DecodeJWT(req,res,next);
-            const result = await CreateEmployeeService.create(userName, userEmail, password, role,companyOwnerId);
+            const { userName, userEmail, password, role } = req.body;
+
+            const userId = DecodeJWT(req.headers?.authorization || '');
+            const result = await CreateEmployeeService.create(userName, userEmail, password, role,userId);
 
             res.status(result.status).send({
                 data: result.data,
@@ -43,10 +34,12 @@ CompanyOwnerController.post(
 
 CompanyOwnerController.get(
     '/current',
-    AuthMiddleware(Role.CompanyOwner),
+    AuthMiddleware(Role.CompanyOwner,Role.CompanyAdmins),
     async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const result = await CurrentEmployeeService.getCurrent();
+        try
+        {
+            const userId = DecodeJWT(req.headers?.authorization || '');
+            const result = await CurrentEmployeeService.getCurrent(userId);
 
             res.status(result.status).send({
                 data: result.data,
@@ -59,10 +52,12 @@ CompanyOwnerController.get(
 
 CompanyOwnerController.get(
     '/ex',
-    AuthMiddleware(Role.CompanyOwner),
+    AuthMiddleware(Role.CompanyOwner,Role.CompanyAdmins),
     async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const result = await ExEmployeeService.getEx();
+        try
+        {
+            const userId = DecodeJWT(req.headers?.authorization || '');
+            const result = await ExEmployeeService.getEx(userId);
 
             res.status(result.status).send({
                 data: result.data,
@@ -75,10 +70,12 @@ CompanyOwnerController.get(
 
 CompanyOwnerController.get(
     '/all',
-    AuthMiddleware(Role.CompanyOwner),
+    AuthMiddleware(Role.CompanyOwner,Role.CompanyAdmins),
     async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const result = await AllEmployeeService.getAll();
+        try
+        {
+            const userId = DecodeJWT(req.headers?.authorization || '');
+            const result = await AllEmployeeService.getAll(userId);
 
             res.status(result.status).send({
                 data: result.data,
@@ -95,9 +92,10 @@ CompanyOwnerController.put(
     async (req: Request, res: Response, next: NextFunction) => {
         try
         {
+            const userId = DecodeJWT(req.headers?.authorization || '');
             const id = req.params.id;
             const {userName,hired_at,deleted_at } = req.body;
-            const result = await UpdatEemployeeService.update(+id,userName,hired_at,deleted_at);
+            const result = await UpdatEemployeeService.update(+id,userName,hired_at,deleted_at,userId);
 
             res.status(result.status).send({
                 data: result.data,
@@ -110,10 +108,12 @@ CompanyOwnerController.put(
 
 CompanyOwnerController.get(
     '/future',
-    AuthMiddleware(Role.CompanyOwner),
+    AuthMiddleware(Role.CompanyOwner,Role.CompanyAdmins),
     async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const result = await HiredEmployeeService.getHired();
+        try
+        {
+            const userId = DecodeJWT(req.headers?.authorization || '');
+            const result = await HiredEmployeeService.getHired(userId);
 
             res.status(result.status).send({
                 data: result.data,
@@ -126,10 +126,12 @@ CompanyOwnerController.get(
 
 CompanyOwnerController.get(
     '/anniversary',
-    AuthMiddleware(Role.CompanyOwner),
+    AuthMiddleware(Role.CompanyOwner,Role.CompanyAdmins),
     async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const result = await AnniversaryEmployeeService.getAnniversary();
+        try
+        {
+            const userId = DecodeJWT(req.headers?.authorization || '');
+            const result = await AnniversaryEmployeeService.getAnniversary(userId);
 
             res.status(result.status).send({
                 data: result.data,

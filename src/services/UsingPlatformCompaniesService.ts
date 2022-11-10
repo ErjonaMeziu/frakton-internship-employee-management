@@ -6,21 +6,25 @@ import { GenerateJWT } from '../utils/generateJWT.util';
 import { UserDataModel } from '../interfaces/models/UserData.model';
 
 export const UsingPlatformCompaniesService = {
-    getUsingCompanies: async () => {
+    getUsingCompanies: async () =>
+    {
         const companyData = await prisma.company.findMany({
             where: {
                 user: {
-                    is_approved: true,
+                    every: {
+                        is_approved:true
+                    }
                 }
             },
             select: {
                 name: true,
                 joined_at: true,
                 logo:true,
-                },
-            });
-
-        if (!companyData) return { status: 204, data: 'No companies using our platform' };
+            },
+           
+        })
+        
+        if (!companyData.length) return { status: 204, data: 'No companies using our platform' };
 
         return { status: 200, data: companyData };
     },

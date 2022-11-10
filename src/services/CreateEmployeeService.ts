@@ -7,9 +7,9 @@ export const CreateEmployeeService = {
     create: async (userName: string, userEmail: string, password: string, role: string, companyOwnerId: number) =>
     {
         const hashedPassword = await HashPassword(password);
-        const companyData = await prisma.company.findFirst({
+        const userData = await prisma.user.findUnique({
             where: {
-                userId: companyOwnerId,
+                id:companyOwnerId
             },
         });
 
@@ -18,7 +18,7 @@ export const CreateEmployeeService = {
                 name: userName,
                 hired_at: new Date(),
                 user_id: companyOwnerId as number,
-                companyId: companyData?.id as number,
+                company_id: userData?.company_id as number,
                 role: role as any,
             },
         });
@@ -31,12 +31,14 @@ export const CreateEmployeeService = {
                     email: userEmail,
                     password: hashedPassword,
                     role: role as any,
-                    is_approved: true
+                    is_approved: true,
+                    company_id: userData?.company_id as number,
+
                 }
             })
         }
 
 
-        return { status: 200, data: "Employee created" };
+        return { status: 201, data: "Employee created" };
     }
 }

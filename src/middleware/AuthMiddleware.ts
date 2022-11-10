@@ -23,7 +23,7 @@ export const AuthMiddleware = (...allowedRoles: string[]) => {
                     const role = decodedObj.payload.role;
                     
                     allowedRoles.includes(role) ? next() : res.status(403).send({ data: 'Unathorized user' });
-                    return role;
+                    return;
                 }
             });
         

@@ -11,6 +11,7 @@ CREATE TABLE "User" (
     "is_approved" BOOLEAN NOT NULL DEFAULT false,
     "role" "Role" NOT NULL,
     "profile" TEXT,
+    "company_id" INTEGER,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -24,7 +25,6 @@ CREATE TABLE "Company" (
     "deleted_at" TIMESTAMP(3),
     "status" TEXT NOT NULL,
     "logo" TEXT,
-    "userId" INTEGER NOT NULL,
 
     CONSTRAINT "Company_pkey" PRIMARY KEY ("id")
 );
@@ -37,7 +37,7 @@ CREATE TABLE "Employee" (
     "updated_at" TIMESTAMP(3),
     "deleted_at" TIMESTAMP(3),
     "user_id" INTEGER NOT NULL,
-    "companyId" INTEGER NOT NULL,
+    "company_id" INTEGER NOT NULL,
     "role" "Role" NOT NULL,
 
     CONSTRAINT "Employee_pkey" PRIMARY KEY ("id")
@@ -50,10 +50,10 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 CREATE UNIQUE INDEX "Company_name_key" ON "Company"("name");
 
 -- AddForeignKey
-ALTER TABLE "Company" ADD CONSTRAINT "Company_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "User" ADD CONSTRAINT "User_company_id_fkey" FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Employee" ADD CONSTRAINT "Employee_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Employee" ADD CONSTRAINT "Employee_companyId_fkey" FOREIGN KEY ("companyId") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Employee" ADD CONSTRAINT "Employee_company_id_fkey" FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

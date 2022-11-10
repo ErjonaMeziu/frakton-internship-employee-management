@@ -19,7 +19,8 @@ model User {
   is_approved Boolean    @default(false)
   role        Role
   profile     String?
-  company     Company[]
+  company_id  Int?
+  company     Company?   @relation(fields: [company_id], references: [id])
   employee    Employee[]
 }
 
@@ -31,8 +32,7 @@ model Company {
   deleted_at  DateTime?
   status      String
   logo       String?
-  user       User       @relation(fields: [userId], references: [id])
-  userId     Int
+  user        User[]
   employee   Employee[]
 }
 
@@ -43,10 +43,10 @@ model Employee {
   updated_at DateTime?
   deleted_at DateTime?
   user_id    Int
-  companyId Int
+  company_id Int
   role      Role
   user      User     @relation(fields: [user_id], references: [id])
-  company   Company  @relation(fields: [companyId], references: [id])
+  company   Company  @relation(fields: [company_id], references: [id])
 }
 
 enum Role {
