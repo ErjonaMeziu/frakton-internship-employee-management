@@ -4,7 +4,7 @@ import { FROM_ADDRESS } from '../config/mail';
 import { LoadFile } from '../utils/LoadFile';
 
 Event.on('register::company', async ({ adminEmail, companyName, companyOwner }) => {
-    console.log(adminEmail);
+    
 
     try {
         await MailHog.sendMail({

@@ -1,9 +1,7 @@
 import { prisma } from '../config/prisma';
-import UserModel from '../models/User.model';
-import * as jwt from 'jsonwebtoken';
 import { ComparePassword } from '../utils/comparePassword.util';
 import { GenerateJWT } from '../utils/generateJWT.util';
-import { UserDataModel } from '../interfaces/models/UserData.model';
+
 
 export const LoginService = {
     login: async (userEmail: string, password: string) => {
